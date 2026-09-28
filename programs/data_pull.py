@@ -35,7 +35,7 @@ def get_pitching_data():
     for year in range(START_YEAR, END_YEAR + 1):
         print(f"Pulling pitching data for {year}...")
 
-        df = team_pitching(year)
+        df = pitching_stats_bref(year)
         df["Season"] = year
 
         data.append(df)
@@ -71,8 +71,8 @@ def pull_team_records():
 
 
 def main():
-    pull_batting_data()
-    pull_pitching_data()
+    get_batting_data()
+    get_pitching_data()
     pull_team_records()
 
     print("\nData collection complete.")
