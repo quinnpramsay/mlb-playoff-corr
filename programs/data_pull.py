@@ -71,8 +71,19 @@ def pull_team_records():
 
 
 def main():
-    get_batting_data()
-    get_pitching_data()
+    batting = get_batting_data()
+    pitching = get_pitching_data()
+
+    batting.to_csv(
+        f"{DATA_DIR}/batting_team_raw.csv",
+        index=False
+    )
+
+    pitching.to_csv(
+        f"{DATA_DIR}/pitching_team_raw.csv",
+        index=False
+    )
+
     pull_team_records()
 
     print("\nData collection complete.")
