@@ -15,46 +15,32 @@ DATA_DIR = "data"
 os.makedirs(DATA_DIR, exist_ok=True)
 
 
-def pull_batting_data():
-    print("Pulling batting data...")
+def get_batting_data():
+    data = []
 
-    data = pd.concat(
-        [
-            batting_stats_bref(year)
-            for year in range(START_YEAR, END_YEAR + 1)
-        ],
-        ignore_index=True
-    )
+    for year in range(START_YEAR, END_YEAR + 1):
+        print(f"Pulling batting data for {year}...")
 
-    data.to_csv(
-        f"{DATA_DIR}/batting_raw.csv",
-        index=False
-    )
+        df = batting_stats_bref(year)
+        df["Season"] = year
 
-    print(f"Batting: {len(data)} rows, {len(data.columns)} columns")
+        data.append(df)
 
-    return data
+    return pd.concat(data, ignore_index=True)
 
 
-def pull_pitching_data():
-    print("Pulling pitching data...")
+def get_pitching_data():
+    data = []
 
-    data = pd.concat(
-        [
-            pitching_stats_bref(year)
-            for year in range(START_YEAR, END_YEAR + 1)
-        ],
-        ignore_index=True
-    )
+    for year in range(START_YEAR, END_YEAR + 1):
+        print(f"Pulling pitching data for {year}...")
 
-    data.to_csv(
-        f"{DATA_DIR}/pitching_raw.csv",
-        index=False
-    )
+        df = team_pitching(year)
+        df["Season"] = year
 
-    print(f"Pitching: {len(data)} rows, {len(data.columns)} columns")
+        data.append(df)
 
-    return data
+    return pd.concat(data, ignore_index=True)
 
 
 def pull_team_records():
