@@ -1,34 +1,32 @@
 import pandas as pd
 
-
 batting_df = pd.read_csv("data/batting_team_raw.csv")
 pitching_df = pd.read_csv("data/pitching_team_raw.csv")
 
 
 TEAM_MAP = {
-    "SEA": "Seattle",
-    "TOR": "Toronto",
-    "NYM": "New York",
-    "SDP": "San Diego",
-    "CLE": "Cleveland",
-    "TBR": "Tampa Bay",
-    "PHI": "Philadelphia",
-    "STL": "St. Louis",
-    "NYY": "New York",
-    "ATL": "Atlanta",
-    "HOU": "Houston",
-    "LAD": "Los Angeles",
-    "MIN": "Minnesota",
-    "TEX": "Texas",
-    "ARI": "Arizona",
-    "MIL": "Milwaukee",
-    "MIA": "Miami",
-    "BAL": "Baltimore",
-    "KCR": "Kansas City",
-    "DET": "Detroit",
-    "BOS": "Boston",
-    "CIN": "Cincinnati",
-    "CHC": "Chicago"
+    "Seattle": "SEA",
+    "Toronto": "TOR",
+    "San Diego": "SDP",
+    "Cleveland": "CLE",
+    "Tampa Bay": "TBR",
+    "Philadelphia": "PHI",
+    "St. Louis": "STL",
+    "Atlanta": "ATL",
+    "Houston": "HOU",
+    "Los Angeles": "LAD",
+    "Minnesota": "MIN",
+    "Texas": "TEX",
+    "Arizona": "ARI",
+    "Milwaukee": "MIL",
+    "Miami": "MIA",
+    "Baltimore": "BAL",
+    "Kansas City": "KCR",
+    "Detroit": "DET",
+    "Boston": "BOS",
+    "Cincinnati": "CIN",
+    "Chicago": "CHC",
+    "New York": "New York",
 }
 
 
@@ -36,17 +34,24 @@ PLAYOFF_TEAMS = list(TEAM_MAP.keys())
 
 
 def get_playoff_players(df):
-    teams = list(TEAM_MAP.values())
+    pattern = "|".join(PLAYOFF_TEAMS)
 
-    pattern = "|".join(teams)
-
-    return df[
+    df = df[
         df["Tm"].str.contains(
             pattern,
             case=False,
             na=False
         )
     ].copy()
+
+    for team_name, team_code in TEAM_MAP.items():
+        df["Tm"] = df["Tm"].str.replace(
+            team_name,
+            team_code,
+            regex=False
+        )
+
+    return df
 
 
 batting_playoff = get_playoff_players(batting_df)
